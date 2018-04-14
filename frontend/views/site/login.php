@@ -11,29 +11,43 @@ $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?php echo Html::encode($this->title); ?></h1>
 
     <p>Please fill out the following fields to login:</p>
 
     <div class="row">
         <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
+            <?php  $form = ActiveForm::begin([
+                    'id' => 'login-form',
+                    'enableAjaxValidation' => false,
+                    'enableClientValidation' => false
+                ]); ?>
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+                <?php  echo $form->field($model, 'email_address')->textInput(); ?>
 
-                <?= $form->field($model, 'password')->passwordInput() ?>
-
-                <?= $form->field($model, 'rememberMe')->checkbox() ?>
-
-                <div style="color:#999;margin:1em 0">
-                    If you forgot your password you can <?= Html::a('reset it', ['site/request-password-reset']) ?>.
-                </div>
+                <?php  echo $form->field($model, 'password')->passwordInput(); ?>
 
                 <div class="form-group">
-                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                    <?php echo Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']); ?>
+                    OR 
+                    <?php echo Html::button('Login With Instagram', ['class' => 'btn btn-warning', 'id' => 'instaBtn']); ?>                   
                 </div>
 
+                <?php echo Html::hiddenInput('instaLogin', 0);?>
+
             <?php ActiveForm::end(); ?>
+
+
         </div>
     </div>
 </div>
+<script>
+$(document).on("click","#instaBtn",function(){
+    $("input[name=instaLogin]").val(1);
+    $('form').on('beforeValidateAttribute', function (event, attribute) {
+       return fasle;
+    });
+
+    $("#login-form").submit();
+});
+</script>

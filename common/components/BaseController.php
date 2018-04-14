@@ -106,7 +106,7 @@ class BaseController extends Controller
 					
 				}else{			
 
-					prd($operation);
+					//prd($operation);
 					
 					if($operation!="FrontendSiteLogout"){
 						//displayMessage(0,'UNAUTHORIZE_ACCESS');							

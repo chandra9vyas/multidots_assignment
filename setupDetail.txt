@@ -1,0 +1,3 @@
+/*==== installation and setup requirement====*/
+1. install curl 
+2. import db from the root yii2latest

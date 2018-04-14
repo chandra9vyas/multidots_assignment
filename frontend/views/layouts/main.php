@@ -46,7 +46,7 @@ AppAsset::register($this);
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
+                'Logout (' . ucwords(Yii::$app->user->identity->u_first_name) .' '. ucwords(Yii::$app->user->identity->u_last_name) . ')',
                 ['class' => 'btn btn-link']
             )
             . Html::endForm()
