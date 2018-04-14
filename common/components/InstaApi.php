@@ -57,8 +57,22 @@ class InstaApi{
         exit;*/
         return Json::decode($responseData,true);
     }
+    /* get user's followers, following and media count*/
+    public function getOwnerDetail($accessToken=NULL){       
+        $ch = curl_init();
+        $url = "https://api.instagram.com/v1/users/self/?access_token=".$accessToken;
+        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch,CURLOPT_TIMEOUT,60);       
+        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false); 
 
-    /*public function getMediaDetails(){       
+        $responseData = curl_exec ($ch);
+
+        if (curl_errno($ch)) {
+            echo 'Error:' . curl_error($ch);
+        }
+        curl_close ($ch);       
+        return Json::decode($responseData,true);
     }
-    */
+    
 }

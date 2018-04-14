@@ -79,7 +79,7 @@ class User extends BaseModel implements IdentityInterface
 			[['password','confirm_password'],'checkChangePassword', 'skipOnEmpty' => false],
 			['password','match','pattern' => '/^.*(?=.*\d)(?=.*[a-z])(?=.*[@#$%^&+=]).*$/','message'=>Yii::t('app','Password must have alphanumeric and special characters.'),'on' =>'signup'],
 		 
-			[['u_first_name', 'u_last_name', 'u_username', 'u_email', 'u_role', 'u_password_hash',  'u_phone', 'u_created', 'u_modified', 'u_salt', 'u_created', 'u_modified','u_image','u_status', 'password', 'confirm_password','u_insta_token','changePassword', 'u_bio', 'u_website', 'u_isBusiness', 'u_insta_id','fullname'], 'safe'],
+			[['u_first_name', 'u_last_name', 'u_username', 'u_email', 'u_role', 'u_password_hash',  'u_phone', 'u_created', 'u_modified', 'u_salt', 'u_created', 'u_modified','u_image','u_status', 'password', 'confirm_password','u_insta_token','changePassword', 'u_bio', 'u_website', 'u_isBusiness', 'u_insta_id','fullname', 'u_follows', 'u_media', 'u_followed_by'], 'safe'],
 
 		];
 	}
@@ -111,7 +111,10 @@ class User extends BaseModel implements IdentityInterface
 			'u_website'=> 'Website', 
 			'u_isBusiness'=> 'Is Business', 
 			'u_insta_id' =>'Insta ID',
-			'fullname' => 'Name'
+			'fullname' => 'Name',
+			'u_follows' => 'Following',
+			'u_media' => 'Posts', 
+			'u_followed_by' => 'Followers'
 		];
 	}
 
