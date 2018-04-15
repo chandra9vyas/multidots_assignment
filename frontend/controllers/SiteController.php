@@ -13,6 +13,7 @@ use yii\filters\AccessControl;
 
 use common\models\LoginForm;
 use common\models\User;
+use common\models\InstaFeeds;
 
 /**
  * Site controller
@@ -103,7 +104,10 @@ class SiteController extends BaseController // Controller
 			if(isset($feeds['pagination']['next_max_id']) && !empty($feeds['pagination']['next_max_id'])){
 				$maxId = $feeds['pagination']['next_max_id'];
 			}
-
+			//save data in db 
+			if(isset($feeds['data']) && !empty($feeds['data'])){
+				$saveFeeds = InstaFeeds::saveFeeds($feeds['data']);
+			}			
 			//prd($feeds);			
 		}      
 
@@ -134,6 +138,11 @@ class SiteController extends BaseController // Controller
 					if(isset($feeds['pagination']['next_max_id']) && !empty($feeds['pagination']['next_max_id'])){
 						$maxId = $feeds['pagination']['next_max_id'];
 					}
+
+					//save data in db 
+					if(isset($feeds['data']) && !empty($feeds['data'])){
+						$saveFeeds = InstaFeeds::saveFeeds($feeds['data']);
+					}	
 					
 					$params = [];
 					$params['feeds'] = $feeds;
