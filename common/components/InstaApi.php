@@ -78,22 +78,28 @@ class InstaApi{
 	}
 
 	/*get insta feeds*/
-	public function getFeeds($accessToken=NULL,$count=10,$minId=NULL,$maxId=NULL){       
-		
-		$url = "https://api.instagram.com/v1/users/self/media/recent/?access_token=".$accessToken."&count=".$count;
+	public function getFeeds($accessToken=NULL,$count=10,$maxId=NULL,$minID=NULL){  
 
+		$url = "https://api.instagram.com/v1/users/self/media/recent/?access_token=".$accessToken."&count=".$count;
+		//prd($url);
+		if(isset( $maxId ) && !empty( $maxId )){
+		
+			$url = $url.'&max_id='.trim($maxId);		
+		}
+
+		//prd($url);
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch,CURLOPT_TIMEOUT,60);       
 		curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false); 
-
 		$responseData = curl_exec ($ch);
 
 		if (curl_errno($ch)) {
 			echo 'Error:' . curl_error($ch);
 		}
-		curl_close ($ch);       
+		curl_close ($ch);    
+		//prd($responseData);
 		return Json::decode($responseData,true);
 	}
 	

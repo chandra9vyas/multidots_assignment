@@ -76,8 +76,12 @@ class SiteController extends BaseController // Controller
 		$obj_insta = new InstaApi();
 		$model = Yii::$app->user->identity;
 		$feeds = [];
-		$nextUrl = "";
+		$maxId = "";
+
 		if(isset($model->u_insta_token) && !empty($model->u_insta_token)){
+	        
+	        
+
 			$result = $obj_insta->getOwnerDetail($model->u_insta_token);
 				if(isset($result['data']['counts']) && !empty($result['data']['counts'])){ 
 					//update delete - in any access user change his detail and we are already logged in
@@ -94,18 +98,59 @@ class SiteController extends BaseController // Controller
 				}
 
 			/*get feeds*/
-			$feeds =  $obj_insta->getFeeds($model->u_insta_token,5);
-			if(isset($feeds['pagination']) && !empty($feeds['pagination'])){
-				$nextUrl = $feeds['pagination']['next_url'];
+			$feeds =  $obj_insta->getFeeds($model->u_insta_token,3);
+
+			if(isset($feeds['pagination']['next_max_id']) && !empty($feeds['pagination']['next_max_id'])){
+				$maxId = $feeds['pagination']['next_max_id'];
 			}
+
 			//prd($feeds);			
 		}      
 
 		$params = [];
 		$params['model'] = $model;
 		$params['feeds'] = $feeds;
-		$params['nextUrl'] = $nextUrl;
+		$params['maxId'] = $maxId;
 		return $this->render('index',$params);
+	}
+
+	// insta feed on scroll down
+	public function actionInstafeeds(){
+		$this->layout = false;
+		if (Yii::$app->getRequest()->isAjax){
+
+			$obj_insta = new InstaApi();
+			$model = Yii::$app->user->identity;
+			$feeds = [];
+			$maxId = "";
+			
+			if(isset($model->u_insta_token) && !empty($model->u_insta_token)){
+	        	
+	        	$maxId = Yii::$app->request->post('maxId');
+	        	
+	        	if($maxId!=""){
+		        	$feeds =  $obj_insta->getFeeds($model->u_insta_token,3,$maxId);
+		        					
+					if(isset($feeds['pagination']['next_max_id']) && !empty($feeds['pagination']['next_max_id'])){
+						$maxId = $feeds['pagination']['next_max_id'];
+					}
+					
+					$params = [];
+					$params['feeds'] = $feeds;
+					$params['maxId'] = $maxId;
+
+					$response['feeds'] = $this->renderPartial('_feeds', $params );
+					$response['maxId'] = $maxId;
+					
+					echo json_encode($response);
+					exit;
+				}	        
+	        }		
+       }else{
+
+       		return $this->redirect(['index']);
+
+       }
 	}
 
 	/**
@@ -173,14 +218,10 @@ class SiteController extends BaseController // Controller
 					}
 						 
 				}else{
-					$error = \yii\widgets\ActiveForm::validate($userModel);
-					 prd($error);
+					$error = \yii\widgets\ActiveForm::validate($userModel);					
 					displayMessage(0,'VALIDATE_ERROR');
 					return $this->redirect(['login']);                  
-				}
-
-				pr($userModel);
-				 prd($result);
+				}				
 
 			}else{
 				displayMessage(0,'',$result['code'].' - '.$result['error_message']);
@@ -198,11 +239,6 @@ class SiteController extends BaseController // Controller
 				]);
 			}
 		}          
-	}
-
-	// instalogin
-	public function actionInstalogin(){
-
 	}
 
 	/**

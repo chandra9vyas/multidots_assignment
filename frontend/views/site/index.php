@@ -1,8 +1,9 @@
 <?php
 
 /* @var $this yii\web\View */
+use yii\helpers\URL;
 
-$this->title = 'My Yii Application';
+$this->title = \Yii::$app->params['title'];
 ?>
 <div class="site-index">
     <div class="jumbotron">
@@ -40,9 +41,11 @@ $this->title = 'My Yii Application';
             </div>
         </div>       
     </div>
+
     <div class="body-content"> 
          <div class="col-xs-12">
             <div class="col-md-12">
+                <hr>
                 <div class="feedContent">
                 <?php 
                     $params = [];
@@ -54,3 +57,40 @@ $this->title = 'My Yii Application';
         </div>
     </div>
 </div>
+<script>
+var maxId ="<?php echo $maxId;?>";
+$(window).scroll(function(){
+ 
+    var position = $(window).scrollTop();
+    var bottom = $(document).height() - $(window).height();
+
+    if( position == bottom ){
+        
+        if(maxId!=""){
+            $.ajax({
+                url: "<?php echo URL::TO(['site/instafeeds'],true)?>",
+                type: 'post',
+                data: {maxId:maxId},
+                datatype:'JSON',
+                async:false,
+                success: function(response){
+                    
+                    var data = JSON.parse(response);
+                    if(data.feeds){
+                        
+                        $(".feedContent").append(data.feeds);
+                    }
+                    if(data.maxId){
+                        if(data.maxId == maxId){
+                            maxId = "";
+                        }else{
+                            maxId = data.maxId;
+                        }
+                    }
+                }   
+            });
+
+        }
+    }
+});
+</script>
