@@ -75,6 +75,8 @@ class SiteController extends BaseController // Controller
 	{
 		$obj_insta = new InstaApi();
 		$model = Yii::$app->user->identity;
+		$feeds = [];
+		$nextUrl = "";
 		if(isset($model->u_insta_token) && !empty($model->u_insta_token)){
 			$result = $obj_insta->getOwnerDetail($model->u_insta_token);
 				if(isset($result['data']['counts']) && !empty($result['data']['counts'])){ 
@@ -90,11 +92,19 @@ class SiteController extends BaseController // Controller
 					$model->u_followed_by = $result['data']['counts']['followed_by'];
 					$model->save();
 				}
-			
+
+			/*get feeds*/
+			$feeds =  $obj_insta->getFeeds($model->u_insta_token,5);
+			if(isset($feeds['pagination']) && !empty($feeds['pagination'])){
+				$nextUrl = $feeds['pagination']['next_url'];
+			}
+			//prd($feeds);			
 		}      
 
 		$params = [];
 		$params['model'] = $model;
+		$params['feeds'] = $feeds;
+		$params['nextUrl'] = $nextUrl;
 		return $this->render('index',$params);
 	}
 
@@ -116,7 +126,9 @@ class SiteController extends BaseController // Controller
 		//instagram login       
 		if(Yii::$app->request->post('instaLogin') == 1){
 			
-			$data = $obj_insta->authInstagram();                      
+			$data = $obj_insta->authInstagram();    
+			prd($data);
+
 		}
 		// callback from instagram 
 		if(isset($_GET['code'])){                 

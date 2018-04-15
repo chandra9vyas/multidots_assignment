@@ -28,26 +28,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php  echo $form->field($model, 'password')->passwordInput(); ?>
 
                 <div class="form-group">
-                    <?php echo Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']); ?>
-                    OR 
-                    <?php echo Html::button('Login With Instagram', ['class' => 'btn btn-warning', 'id' => 'instaBtn']); ?>                   
+                    <?php echo Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']); ?>                              
                 </div>
-
-                <?php echo Html::hiddenInput('instaLogin', 0);?>
-
+                    
             <?php ActiveForm::end(); ?>
-
-
+            <div class="form-group">OR</div>
+            <?php  $form = ActiveForm::begin(['id' => 'insta-login-form']); ?>
+                   <?php echo Html::hiddenInput('instaLogin', 0);?>
+                    <div class="form-group">           
+                    <?php echo Html::button('Login With Instagram', ['class' => 'btn btn-warning', 'id' => 'instaBtn']); ?>       
+                    </div>
+            <?php ActiveForm::end(); ?>        
         </div>
     </div>
 </div>
 <script>
 $(document).on("click","#instaBtn",function(){
-    $("input[name=instaLogin]").val(1);
-    $('form').on('beforeValidateAttribute', function (event, attribute) {
-       return fasle;
-    });
-
-    $("#login-form").submit();
+    $("input[name=instaLogin]").val(1);    
+    $("#insta-login-form").submit();
 });
 </script>
