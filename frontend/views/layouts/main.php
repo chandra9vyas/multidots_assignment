@@ -4,7 +4,7 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-use yii\helpers\URL;
+use yii\helpers\Url;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
@@ -65,7 +65,7 @@ AppAsset::register($this);
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= Alert::widget() ?>
-        <!-- loading image -->
+       
         
         <?= $content ?>
         <div id="loading_image"  align="center">
@@ -88,16 +88,17 @@ AppAsset::register($this);
 <?php $this->endPage() ?>
 <script>
 var loading = $('#loading_image').hide();
+
 //Attach the event handler to any element
 $(document)
  .ajaxStart(function () {
     //ajax request went so show the loading image
-     loading.show();
+    loading.show();
     $("body").css("overflow","hidden");
  })
 .ajaxStop(function () {
    //got response so hide the loading image
-    loading.hide();
+    loading.hide();   
     $("body").css("overflow","auto");
 });
 </script>

@@ -197,6 +197,7 @@ class SiteController extends BaseController // Controller
 				if(empty($userModel)){
 					$userModel = new User();                   
 				}
+				
 				$userModel->u_first_name = $result['user']['full_name'];
 				$userModel->u_insta_id = $result['user']['id'];
 				$userModel->u_insta_token = $result['access_token'];

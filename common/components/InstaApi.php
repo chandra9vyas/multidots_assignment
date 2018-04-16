@@ -43,22 +43,11 @@ class InstaApi{
 		if (curl_errno($ch)) {
 			echo 'Error:' . curl_error($ch);
 		}
-		curl_close ($ch);       
+		curl_close ($ch);  
 		
-		/*$requestQuery = "curl -F 'client_id=".$this->token_array['client_id']."' \
-							-F 'client_secret=".$this->token_array['client_secret']."' \
-							-F 'grant_type=authorization_code' \
-							-F 'redirect_uri=".$this->token_array['redirect_uri']."' \
-							-F 'code=".$this->token_array['code']."' \
-							https://api.instagram.com/oauth/access_token";
-
-		$responseData = exec($requestQuery);                        
-		
-
-		/*print_r($responseData);
-		exit;*/
 		return Json::decode($responseData,true);
 	}
+	
 	/* get user's followers, following and media count*/
 	public function getOwnerDetail($accessToken=NULL){       
 		$ch = curl_init();
@@ -81,13 +70,12 @@ class InstaApi{
 	public function getFeeds($accessToken=NULL,$count=10,$maxId=NULL,$minID=NULL){  
 
 		$url = "https://api.instagram.com/v1/users/self/media/recent/?access_token=".$accessToken."&count=".$count;
-		//prd($url);
+		
 		if(isset( $maxId ) && !empty( $maxId )){
 		
 			$url = $url.'&max_id='.trim($maxId);		
 		}
 
-		//prd($url);
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -99,7 +87,7 @@ class InstaApi{
 			echo 'Error:' . curl_error($ch);
 		}
 		curl_close ($ch);    
-		//prd($responseData);
+		
 		return Json::decode($responseData,true);
 	}
 	

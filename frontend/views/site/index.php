@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
-use yii\helpers\URL;
+use yii\helpers\Url;
 
 $this->title = \Yii::$app->params['title'];
 ?>
@@ -59,6 +59,12 @@ $this->title = \Yii::$app->params['title'];
 </div>
 <script>
 var maxId ="<?php echo $maxId;?>";
+
+$(document).ready(function(){
+    setTimeout(function(){  $(window).trigger('scroll'); }, 3000);
+});
+
+// on scroll donw add instafeeds
 $(window).scroll(function(){
  
     var position = $(window).scrollTop();
@@ -72,7 +78,6 @@ $(window).scroll(function(){
                 type: 'post',
                 data: {maxId:maxId},
                 datatype:'JSON',
-                async:false,
                 success: function(response){
                     
                     var data = JSON.parse(response);
